@@ -8,6 +8,7 @@
     "typescript": "^5.8.2"
   },
   "dependencies": {
+    "match-iz": "^5.0.1",
     "typescript-result": "^3.1.1"
   }
 }

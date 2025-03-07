@@ -1,20 +1,15 @@
-import { Result } from "typescript-result";
+import { allOf, anyOf, when, otherwise, match } from "match-iz";
+import { nthSun, isMar, isFri, isEvening, isSat, isSun } from "match-iz/dates";
 
-function divide(a: number, b: number): Result<number, string> {
-  if (b === 0) {
-    return Result.error("Cannot divide by zero");
-  }
+const isLastSundayOfMarch = allOf(nthSun(-1), isMar);
+const isTheWeekend = anyOf(allOf(isFri, isEvening), isSat, isSun);
 
-  return Result.ok(a / b);
-}
-
-const result = divide(10, 0);
-
-result
-  .map((value) => value * 2)
-  .onSuccess((value) => {
-    console.log(`Result: ${value}`);
+const str = match(new Date())(
+  when(isLastSundayOfMarch, () => "Last Sunday of March: Clocks go forward"),
+  when(isTheWeekend, () => "Ladies and Gentlemen; The Weekend"),
+  otherwise((dateObj) => {
+    return `The clock is ticking: ${dateObj.toString()}`;
   })
-  .onFailure((error) => {
-    console.error(`Error: ${error}`);
-  });
+);
+
+console.log(str);
